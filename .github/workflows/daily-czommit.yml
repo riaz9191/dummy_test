@@ -19,7 +19,8 @@ jobs:
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
       - name: Update timestamp
-        run: echo "Last update: $(date -u)" > last_update.txt
+        run: |
+          echo "Last update: $(date -u)" > last_update.txt
 
       - name: Commit changes
         run: |
