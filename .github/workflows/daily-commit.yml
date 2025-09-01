@@ -1,0 +1,32 @@
+name: Test - Every Minute Commit
+
+on:
+  schedule:
+    - cron: '*/1 * * * *'  # Every minute
+  workflow_dispatch:        # Manual run button
+
+jobs:
+  commit:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repository
+        uses: actions/checkout@v4
+
+      - name: Set Git config
+        run: |
+          git config user.name "YourUsername"
+          git config user.email "your-email@example.com"
+
+      - name: Update file
+        run: |
+          echo "Test update at: $(date -u)" > last_update.txt
+
+      - name: Commit changes
+        run: |
+          git add last_update.txt
+          git commit -m "Test commit at: $(date -u)" || echo "No changes to commit"
+
+      - name: Push changes
+        run: |
+          git push
