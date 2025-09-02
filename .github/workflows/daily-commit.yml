@@ -2,7 +2,7 @@ name: Daily Commit
 
 on:
   schedule:
-   - cron: '*/1 * * * *'  # Every minute
+    - cron: '0 4,16 * * *'  # Every day at 10 AM and 10 PM Bangladesh time (UTC+6)
   workflow_dispatch:
 
 jobs:
@@ -18,14 +18,15 @@ jobs:
           git config user.name "github-actions[bot]"
           git config user.email "41898282+github-actions[bot]@users.noreply.github.com"
 
-      - name: Update timestamp
+      - name: Update timestamp (Bangladesh time)
         run: |
-          echo "Last update: $(date -u)" > last_update.txt
+          export TZ=Asia/Dhaka
+          echo "Last update: $(date)" > last_update.txt
 
       - name: Commit changes
         run: |
           git add last_update.txt
-          git commit -m "Daily update: $(date -u)" || echo "No changes to commit"
+          git commit -m "Daily update: $(date)" || echo "No changes to commit"
 
       - name: Push with GITHUB_TOKEN
         env:
